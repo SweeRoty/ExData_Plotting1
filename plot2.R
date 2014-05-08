@@ -1,0 +1,12 @@
+data <- read.table("household_power_consumption.txt", header = TRUE, sep = ";")
+data.sub <- data[data$Date == "1/2/2007" | data$Date == "2/2/2007", ]
+data.sub$Date <- as.character(data.sub$Date)
+data.sub$Time <- as.character(data.sub$Time)
+time <- paste(data.sub$Date, data.sub$Time, sep = " ")
+time <- strptime(time, "%d/%m/%Y%X")
+data.sub <- cbind(data.sub, time)
+data.sub$Global_active_power <- as.character(data.sub$Global_active_power)
+data.sub$Global_active_power <- as.numeric(data.sub$Global_active_power)
+png("plot2.png", width = 480, height = 480, units = "px")
+with(data.sub, plot(time, Global_active_power, type = "l", xlab = "", ylab = "Global Active Power (kilowatts)"))
+dev.off()
